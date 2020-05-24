@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tìm Hiểu về mật mã DES</title>
+	<link rel="stylesheet" type="text/css" href="container/style/css.css">
+</head>
+<body>
+<h1 style="text-align: center;">Lịch Sử về mã DES</h1>
+<p>  Ngày nay, nhu cầu về công nghệ thông tin trong đời sống là đa dạng.  Với việc ứng dụng mã hóa vào việc truyền thông tin trên mạng, mã hóa thông tin là rất cần thiết, góp phần đảm bảo sự toàn vẹn và bảo mật, xác thực cho thông điệp cần gửi đi qua mạng Internet.
+</p>
+
+ <p>     
+     DES (viết tắt của Data Encryption Standard, hay Tiêu chuẩn Mã hóa Dữ liệu) là một phương pháp mật mã hóa được FIPS (Tiêu chuẩn Xử lý Thông tin Liên bang Hoa Kỳ) chọn làm chuẩn chính thức vào năm 1976. Sau đó chuẩn này được sử dụng rộng rãi trên phạm vi thế giới. Ngay từ đầu, thuật toán của nó đã gây ra rất nhiều tranh cãi, do nó bao gồm các thành phần thiết kế mật, độ dài khóa tương đối ngắn, và các nghi ngờ về cửa sau để Cơ quan an ninh quốc gia Hoa Kỳ (NSA) có thể bẻ khóa. Do đó, DES đã được giới nghiên cứu xem xét rất kỹ lưỡng, việc này đã thúc đẩy hiểu biết hiện đại về mật mã khối (block cipher) và các phương pháp thám mã tương ứng.
+</p>
+<p>
+    Hiện nay DES được xem là không đủ an toàn cho nhiều ứng dụng. Nguyên nhân chủ yếu là độ dài 56 bit của khóa là quá nhỏ. Khóa DES đã từng bị phá trong vòng chưa đầy 24 giờ. Đã có rất nhiều kết quả phân tích cho thấy những điểm yếu về mặt lý thuyết của mã hóa có thể dẫn đến phá khóa, tuy chúng không khả thi trong thực tiễn. Thuật toán được tin tưởng là an toàn trong thực tiễn có dạng Triple DES (thực hiện DES ba lần), mặc dù trên lý thuyết phương pháp này vẫn có thể bị phá. Gần đây DES đã được thay thế bằng AES (Advanced Encryption Standard, hay Tiêu chuẩn Mã hóa Tiên tiến).
+
+</p>
+<h2 >Sơ đồ mã DES</h2>
+<img src="container/img/1.png" id="anhnho">
+<h2>Cách mà mã DES được mã hóa</h2>
+<h3>Tính Chất.</h3>
+<p>Là mã thuộc hệ mã Feistel gồm 16 vòng, ngoài ra DES có thêm một hoán vị khởi tạo trước khi vào vòng 1 và một hoán vị khởi tạo sau vòng 16
+</p>
+<p>
+– Kích thước của khối là 64 bít: ví dụ bản tin “meetmeafterthetogaparty” biểu diễn theo mã ASCII thì mã DES sẽ mã hóa làm 3 lần, mỗi lần 8 chữ cái (64 bít): meetmeaf – tertheto – gaparty.
+</p>
+<p>
+– Kích thước khóa là 56 bít
+</p>
+<p>
+
+– Mỗi vòng của DES dùng khóa con có kích thước 48 bít được trích ra từ khóa chính. Hình dưới đây minh họa các vòng của mã DES</p>
+<img src="container/img/2.jpg">
+<p>– Mã hóa DES gồm ba phần, phần thứ nhất là các hoán vị khởi tạo và hoán vị kết thúc. Phần thứ hai là các vòng Feistel, phần thứ ba là thuật toán sinh khóa con. Chúng ta sẽ lần lượt đi vào chi tiết của từng phần.</p>
+<h4>a.Hoán vị khởi tạo và hoán vị kết thúc</h4>
+<p>
+– Bản mã được chia thành các khối 64bit và được đánh số các bít của khối 64bit theo thứ tự từ trái sang phải là 0, 1, …, 62, 63 ta sẽ có ma trận hoán vị IP.<br>
+
+Hoán vị khởi tạo sẽ hoán đổi các bít theo quy tắc sau:<br>
+
+<img src="container/img/3.png"><br>
+
+Hoán vị kết thúc hoán đổi theo quy tắc sau:<br>
+
+<img src="container/img/4.png"><br>
+
+Hoán vị kết thúc chính là hoán vị nghịch đảo của hoán vị khởi tạo.<br>
+Đối với knownplaintext hay chosen-plaintext attack, hoán vị khởi tạo và hoán vị kết  thúc không có ý nghĩa bảo mật, sự tồn tại của hai hoán vị trên được nhận định là do yếu tố lịch sử.
+</p>
+<h4>b.Các vòng của DES</h4>
+<p>– Một vòng mã hóa của DES sẽ thực hiện chia khối làm 2 phần mỗi phần 32bit (L và R). Sau đó đem phần R biến đổi qua hàm F rồi thực hiện hoán vị giữa L và R rồi kết hợp lại thành khối 64bit.</p>
+<img src="container/img/5.png"><br>
+<p>Cấu trúc một vòng của DES</p>
+<p>Trong DES, hàm F của Feistel là:<br><br>
+
+      F (Ri-1, Ki) = P-box(S-boxes (Expand (Ri-1) Ki))<br><br>
+
+     Trong đó hàm Expand vừa mở rộng vừa hoán vị Ri-1 từ 32 bít lên 48 bít. Hàm Sboxes nén 48 bít lại còn 32 bít. Hàm P-box là một hoán vị 32 bít. Mô tả của cáchàm trên là như sau:<br><br>
+
+     <b>Expand</b>: 32 bit đầu vào được mở rộng thành 48 bit sử dụng thuật toán hoán vị mở rộng (expansion permutation) với việc nhân đôi một số bit.<br><br>
+
+
+ 
+      Hàm <b>Expand</b> đánh số các bít của Ri-1 theo thứ tự từ trái sang phải là 0, 1, 2, …, 31. Hàm Expand thực hiện vừa hoán vị vừa mở rộng 32 bít thành 48 bít theo quy tắc:</p>
+
+  <img src="container/img/6.png"><br>
+  <p>
+  	    <b>Trộn khóa:</b> 48 bit thu được sau quá trình mở rộng được XOR với khóa con. Mười sáu khóa con 48 bit được tạo ra từ khóa chính 56 bit theo một chu trình tạo khóa con (key schedule) miêu tả ở phần sau.
+  </p>
+  <p>
+  	 <b>S-BOXES:</b> 48 bit sau khi trộn được chia làm 8 khối con 6 bit và được xử lý qua hộp thay thế S-box. Đầu ra của mỗi khối 6 bit là một khối 4 bit theo một chuyển đổi phi tuyến được thực hiện bằng một bảng tra. Khối S-box đảm bảo phần quan trọng cho độ an toàn của DES. Nếu không có S-box thì quá trình sẽ là tuyến tính và việc thám mã sẽ rất đơn giản.<br><br>
+
+       Hàm S-boxes của DES biến đổi một số 48 bít thành một số 32 bít. Tuy nhiên, nếu chỉ lập một bảng tra cứu như ở TinyDES thì bảng này phải có 216 dòng và 232 cột, dẫn đến số phần tử của bảng rất lớn. Để giảm kích thước của bảng tra cứu, người ta chia hàm S-boxes thành 8 hàm S-box con, mỗi hàm biến đổi số 6 bít thành số 4 bít (hình dưới):<br>
+  </p>
+    <img src="container/img/7.png" id="anhnho"><br>
+    <p>Hàm S-box đầu tiên, hộp S1 có nội dung như sau:</p>
+    <img src="container/img/8.png" id="anhnho"><br>
+<p>
+	Có thể thấy, mỗi hàm S con của S-box của là một phép thay thế Substitution.Các hàm S-box con không khả nghịch, do đó hàm S-boxes cũng không khả nghịch. Sự phức tạp này của S-boxes là yếu tố chính làm cho DES có độ an toàn cao.
+<p>
+<p>
+   <b> P-BOX:</b> Cuối cùng, 32 bit thu được sau S-box sẽ được sắp xếp lại theo một thứ tự cho trước (còn gọi là P-box).<br>
+
+   Hàm P-box cũng thực hiện hoán vị 32 bít đầu vào theo quy tắc:
+</p>
+<img src="container/img/9.png"><br>
+<h4>d.Các vòng sinh khóa</h4>
+<p>Khóa K 64 bít ban đầu được rút trích và hoán vị thành một khóa 56 bít (tức chỉ sử dụng 56 bít) theo quy tắc PC-1:</p><br>
+<img src="container/img/10.png"><br>
+<p>Khóa 56 bít này được chia thành 2 nửa trái phải KL0 và KR0, mỗi nửa có kích thước 28 bít. Tại vòng thứ i (i = 1, 2, 3,…,16) , KLi-1 và KRi-1 được dịch vòng trái ri bít để có được KLi và KRi, với ri được định nghĩa:</p>
+<img src="container/img/11.png" id="anhnho"><br>
+<p>Cuối cùng khóa Ki của mỗi vòng được tạo ra bằng cách hoán vị và nén 56 bít của KLi và KRi thành 48 bít theo quy tắc</p>
+<img src="container/img/12.png"><br>
+<p>KLi và KRi, với ri được định nghĩa: Các khóa con 48 bit được tạo thành bởi thuật toán lựa chọn 2 (Permuted Choice 2, hay PC-2) gồm 24 bit từ mỗi phần. Quá trình dịch bit (được ký hiệu là “<<<” trong sơ đồ) khiến cho các khóa con sử dụng các bit khác nhau của khóa chính; mỗi bit được sử dụng trung bình ở 14 trong tổng số 16 khóa con.</p><br>
+<img src="container/img/13.png"><br>
+<p> Qua sơ đồ thuật toán sinh khóa con có thể thấy rằng thực sự chỉ có 56 bit của khóa chính được sử dụng, 8 bit còn lại là mã kiểm tra chẵn lẻ (parity bits) và bị lọc ra ở biến đổi PC1. Các bộ biến đổi PC1 và PC2 chỉ đơn giản là các bộ vừa chọn lọc vừa hoán vị (PC = permuted choice = lựa chọncó hoán vị). Các biến đổi R1 và R2 (left rotate 1 bit và 2 bit) tương ứng là các phép đẩy bit trái 1 và 2 vị trí</p>
+<p>
+  Ký hiệu : thể hiện phép toán XOR. Hàm F làm biến đổi một nửa của khối đang xử lý với một khóa con. Đầu ra sau hàm F được kết hợp với nửa còn lại của khối và hai phần được tráo đổi để xử lý trong chu trình kế tiếp. Sau chu trình cuối cùng thì 2 nửa không bị tráo đổi; đây là đặc điểm của cấu trúc Feistel khiến cho quá trình mã hóa và giải mã trở nên giống nhau.</p>
+<h1>2.Thuật toán giải mã</h1>
+<p>
+	Đối với mã hóa DES thì thuật toán giải mã sẽ làm ngược lại các bước của thuật toán mã hóa ta sẽ có bản rõ ban đầu cần mã hóa.<br>
+
+Thuật toán giải mã được xây dựng giống hệt như thuật toán sinh mã nhưng có các khóa con được sử dụng theo thứ tự ngược lại, tức là dùng khóa K16 cho vòng lặp 1, khóa K15 cho vòng lặp 2 … Vì vậy, thuật toán giải mã có thể được viết lại dưới dạng công thức sau:<br><br>
+
+              <p style="margin-left: 100px"> DES-1= (IP)-1  F1 xor T xor F2  xor T …  xor F15  xorT xor F16 xor (IP)</p><br>
+
+Bây giờ chú ý rằng mỗi hàm T (phép biến đổi L và R) hoặc F đều là các hàm có tính chất đối hợp (f = f-1, hay f (f(x) =x). Do đó nếu ta thực hiện phép tích hàm DES-1  DES hay DES  DES-1 thì sẽ thu được phép đồng nhất. Điều đó giải thích tại sao thuật toán giải mã lại giống hệt như sinh mã chỉ có khác về thứ từ trong chuỗi khóa con.
+</p>
+</body>
+</html>
